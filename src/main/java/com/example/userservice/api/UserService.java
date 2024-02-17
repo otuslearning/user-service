@@ -5,7 +5,11 @@ public interface UserService {
 
     UserDto findUserById(Long id);
 
+    UserDto getUserByRequestContext();
+
     void deleteUser(Long id);
 
     void updateUser(Long id, UpdateUserDto userDto);
+
+    void updateUser(UpdateUserDto userDto);
 }

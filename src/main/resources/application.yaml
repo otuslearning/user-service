@@ -1,3 +1,7 @@
+application:
+  web:
+    prefix:
+      public: /api/user
 spring:
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
@@ -25,3 +29,7 @@ management:
     metrics:
       export:
         enabled: true
+
+#logging:
+#  level:
+#    org.springframework: TRACE

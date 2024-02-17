@@ -30,9 +30,17 @@ public class UserConvertor {
     }
 
     public void map(UpdateUserDto dto, User user) {
-        user.setFirstname(dto.getFirstname());
-        user.setLastname(dto.getLastname());
-        user.setEmail(dto.getEmail());
-        user.setPhone(dto.getPhone());
+        if (dto.getFirstname() != null) {
+            user.setFirstname(dto.getFirstname());
+        }
+        if (dto.getLastname() != null) {
+            user.setLastname(dto.getLastname());
+        }
+        if (dto.getEmail() != null) {
+            user.setEmail(dto.getEmail());
+        }
+        if (dto.getPhone() != null) {
+            user.setPhone(dto.getPhone());
+        }
     }
 }

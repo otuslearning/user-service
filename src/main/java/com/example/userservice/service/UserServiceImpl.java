@@ -1,6 +1,7 @@
 package com.example.userservice.service;
 
 import com.example.userservice.api.CreateUserDto;
+import com.example.userservice.api.RequestContextService;
 import com.example.userservice.api.UpdateUserDto;
 import com.example.userservice.api.UserDto;
 import com.example.userservice.api.UserService;
@@ -16,16 +17,25 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
     private final UserRepository repository;
     private final UserConvertor convertor;
+    private final RequestContextService requestContextService;
 
     @Override
     public void createUser(CreateUserDto userDto) {
         User user = convertor.convert(userDto);
+        user.setAccountId(requestContextService.getRequestContext().getAccountId());
         repository.save(user);
     }
 
     @Override
     public UserDto findUserById(Long id) {
         User user = repository.findById(id).orElseThrow(UserNotFoundException::new);
+        return convertor.convert(user);
+    }
+
+    @Override
+    public UserDto getUserByRequestContext() {
+        User user = repository.findByAccountId(requestContextService.getRequestContext().getAccountId())
+                .orElseThrow(UserNotFoundException::new);
         return convertor.convert(user);
     }
 
@@ -38,6 +48,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUser(Long id, UpdateUserDto userDto) {
         User user = repository.findById(id).orElseThrow(UserNotFoundException::new);
+        convertor.map(userDto, user);
+        repository.save(user);
+    }
+
+    @Override
+    public void updateUser(UpdateUserDto userDto) {
+        User user = repository.findByAccountId(requestContextService.getRequestContext().getAccountId())
+                .orElseThrow(UserNotFoundException::new);
         convertor.map(userDto, user);
         repository.save(user);
     }

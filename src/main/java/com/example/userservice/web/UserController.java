@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user")
+@RequestMapping("${application.web.prefix.public}")
 public class UserController {
     private final UserService service;
 
@@ -27,6 +27,16 @@ public class UserController {
     @ResponseStatus(value = HttpStatus.CREATED)
     public void createUser(@RequestBody CreateUserDto userDto) {
         service.createUser(userDto);
+    }
+
+    @PutMapping
+    public void updateUser(@RequestBody UpdateUserDto userDto) {
+        service.updateUser(userDto);
+    }
+
+    @GetMapping
+    public UserDto getUser() {
+        return service.getUserByRequestContext();
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -41,7 +51,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public void updateUser(@PathVariable Long id, UpdateUserDto userDto) {
+    public void updateUser(@PathVariable Long id, @RequestBody UpdateUserDto userDto) {
         service.updateUser(id, userDto);
     }
 }
