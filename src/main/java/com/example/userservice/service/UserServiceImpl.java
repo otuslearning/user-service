@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void createUser(CreateUserDto userDto) {
         User user = convertor.convert(userDto);
-        user.setAccountId(requestContextService.getRequestContext().getAccountId());
+        user.setAccountGuid(requestContextService.getRequestContext().getAccountGuid());
         repository.save(user);
     }
 
@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserByRequestContext() {
-        User user = repository.findByAccountId(requestContextService.getRequestContext().getAccountId())
+        User user = repository.findByAccountGuid(requestContextService.getRequestContext().getAccountGuid())
                 .orElseThrow(UserNotFoundException::new);
         return convertor.convert(user);
     }
@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(UpdateUserDto userDto) {
-        User user = repository.findByAccountId(requestContextService.getRequestContext().getAccountId())
+        User user = repository.findByAccountGuid(requestContextService.getRequestContext().getAccountGuid())
                 .orElseThrow(UserNotFoundException::new);
         convertor.map(userDto, user);
         repository.save(user);

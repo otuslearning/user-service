@@ -6,5 +6,5 @@ import lombok.Getter;
 @Getter
 @Builder
 public class RequestContextDto  {
-    private String accountId;
+    private String accountGuid;
 }
